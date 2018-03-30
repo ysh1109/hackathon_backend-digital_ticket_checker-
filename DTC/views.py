@@ -52,6 +52,17 @@ class passenger_list(APIView):
                     return Response("Updated")
                 except:
                     return Response("INVALID REQUEST")
+            elif req_keys[0] == "update_multiple_pnrs":
+                try:
+                    mutiple_pnr_verification = list(json_obj.values())[0]
+                    for i in range(len(mutiple_pnr_verification)):
+                        p = passenger_reservation.objects.get(**mutiple_pnr_verification[i])
+                        p.verification_status='V'
+                        p.save()
+                    return Response("Updated")
+                except:
+                    return Response("Invalid Request")
+
             elif req_keys[0] == "train_info":
                 train_no = json_obj["train_info"]
                 t_r = Train.objects.filter(train_no=train_no)
